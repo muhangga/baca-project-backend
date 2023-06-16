@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChapterUserTable extends Migration
+class CreateGameTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateChapterUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('chapter_user', function (Blueprint $table) {
+        Schema::create('game', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('chapter_id')->constrained('chapter');
-            $table->foreignId('user_id')->constrained('users');
+            $table->string('level_id')->foreign('level_id')->references('id')->on('level');
+            $table->string('user_id')->foreign('user_id')->references('id')->on('users');
+            $table->json('health_user');
+            $table->json('health_enemy');
+            $table->json('score');
             $table->boolean('is_finished')->default(false);
             $table->timestamps();
         });
@@ -29,6 +32,6 @@ class CreateChapterUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chapter_user');
+        Schema::dropIfExists('game');
     }
 }
